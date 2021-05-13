@@ -1,0 +1,26 @@
+body {
+  background-color: #222831;
+  font-family: arial;
+  text-align: center;
+}
+fieldset {
+  width: 300px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+}
+#display {
+  width: 300px;
+  min-height: 50px;
+}
+
+
+input[type="button"] {
+  width: 75px;
+  height: 50px;
+}
+input[name="memory"] {
+  width: 60px;
+  height: 30px;
+}
