@@ -15,12 +15,26 @@ fieldset {
   min-height: 50px;
 }
 
+input[type="text"] {
+  width: 280px;
+  height: 50px;
+  text-align: right;
+  border: none;
+}
+
+#output {
+  border-radius: 5px 5px 0px 0px;
+}
+
+#new-input {
+  border-radius: 0px 0px 5px 5px;
+}
 
 input[type="button"] {
   width: 75px;
   height: 50px;
 }
-input[name="memory"] {
+input[class="memory"] {
   width: 60px;
   height: 30px;
 }
