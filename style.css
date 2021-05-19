@@ -28,6 +28,7 @@ input[type="text"] {
 
 #new-input {
   border-radius: 0px 0px 5px 5px;
+  font-size: 200%;
 }
 
 input[type="button"] {
