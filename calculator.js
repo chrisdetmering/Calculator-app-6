@@ -3,17 +3,22 @@ let currentValue = ""
 let firstValue = ""
 let secondValue = ""
 let memoryValue = ""
+let calculatorState = "not-calculated"
 
 document.querySelectorAll(".numeric").forEach(numberButton => {
   numberButton.addEventListener('click', event => {
     const numberID=event.target.id;
-    //validateForNumbers
+    validateForNumbers();
     pressNumberButton(numberID);
-    renderDisplay() 
+    renderDisplay();
  });
 });
 
-//function validateforNumbers
+function validateForNumbers() {
+  if (currentValue==="NaN" || currentValue==="Infinity") {
+    resetValues();
+  }
+}
 
 function pressNumberButton(numberID) {
   switch(numberID) {
@@ -41,7 +46,7 @@ document.querySelectorAll(".operator").forEach(operatorButton => {
     const operatorID=event.target.id;
     validateforOperators(operatorID);
     pressOperatorButton(operatorID);
-    renderDisplay()
+    renderDisplay();
   });
 });
 
@@ -69,17 +74,18 @@ function pressOperatorButton(operatorID) {
 
 document.getElementById("backspace").addEventListener('click', () => {
   currentValue=currentValue.substring(0, currentValue.length - 1);
-  renderDisplay()
+  renderDisplay();
 });
 
 document.getElementById("clear-entry").addEventListener('click', () => {
-  savedOperator = ""; currentValue = ""; firstValue = ""; secondValue = "";
+  resetValues();
   renderDisplay();
 });
 
 document.getElementById("clear-content").addEventListener('click', () => {
-  savedOperator = ""; currentValue = ""; firstValue = ""; secondValue = ""; memoryValue = "";
-  renderDisplay()
+  memoryValue = "";
+  resetValues();
+  renderDisplay();
 });
 
 document.getElementById("equals").addEventListener('click', () => {
@@ -87,27 +93,24 @@ document.getElementById("equals").addEventListener('click', () => {
   renderDisplay();
 });
 
-/*function resetScreen() {
-  if (currentValue==="NaN" || currentValue==="Infinity") {
-    currentValue="Error";
-  }
-  if (secondValue!="")
-  {
-    currentValue = ""; secondValue = "";
-  }
-}*/
-
 function calculate() {
   secondValue=currentValue;
   switch(savedOperator) {
-    case "+": console.log("hi");
-    currentValue=parseInt(firstValue)+parseInt(secondValue); break;
+    case "+": currentValue=parseInt(firstValue)+parseInt(secondValue); break;
     case "-": currentValue=parseInt(firstValue)-parseInt(secondValue);  break;
     case "x": currentValue=parseInt(firstValue)*parseInt(secondValue); break;
     case "/": currentValue=parseInt(firstValue)/parseInt(secondValue); break;
     case "^": currentValue=parseInt(firstValue)**parseInt(secondValue);break;
   }
-  secondValue=`${secondValue} =`;
+  currentValue=currentValue.toString();
+}
+
+function resetValues() {
+  savedOperator = ""; 
+  currentValue = ""; 
+  firstValue = ""; 
+  secondValue = "";
+  renderDisplay();
 }
 
 document.querySelectorAll(".action").forEach(actionButton => {
@@ -118,7 +121,7 @@ document.querySelectorAll(".action").forEach(actionButton => {
        currentValue = 1 / parseInt(currentValue);
        currentValue=currentValue.toString(); 
         break;
-      case "square": secondValue=`sqr(${currentValue})`;
+      case "square": secondValue="sqr("+currentValue+")";
       currentValue = parseInt(currentValue)**2; 
       currentValue=currentValue.toString();
         break;
@@ -130,12 +133,46 @@ document.querySelectorAll(".action").forEach(actionButton => {
       case "positive-negative": currentValue.search("-")!=-1 ?  currentValue=currentValue.substring(1) : currentValue=`-${currentValue}`;
         break;
     }
-    renderDisplay()
+    renderDisplay();
   }
  });
 });
 
 function renderDisplay () {
+  displayLimiter();
   document.getElementById('new-input').value=currentValue;
   document.getElementById('output').value=`${firstValue} ${savedOperator} ${secondValue}`;
+}
+
+/*function postEntryValidate() {
+  console.log("Postvalidate");
+  switch(currentValue) {
+    case "NaN": currentValue="InvalidEntry"; calculatorState="error";
+      break;
+    case "Infinity": currentValue="Overflow"; calculatorState="error";
+    break;
+  }
+  renderDisplay ()
+}*/
+
+function displayLimiter() {
+  let numberArray=currentValue.split("");
+  let decimalIndex=numberArray.indexOf(".")
+  let numberLength=numberArray.length
+  
+  switch (true) {
+    case (decimalIndex == -1): 
+      if (numberLength > 15) {
+        currentValue="Overflow"; calculatorState="error";
+      } else {
+        currentValue=numberArray.join("");
+      }; break;
+    
+    case (decimalIndex >= 15): 
+      currentValue="Overflow"; calculatorState="error"; break;
+    
+    case (decimalIndex <= 14 ):
+      currentValue=numberArray.join("");
+      currentValue=currentValue.substring(0,15)
+  }
 }
