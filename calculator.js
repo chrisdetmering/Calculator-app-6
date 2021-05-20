@@ -90,11 +90,11 @@ function calculate() {
     secondValue=firstValue;
   }
   switch(savedOperator) {
-    case "+": currentValue=parseInt(firstValue)+parseInt(secondValue); break;
-    case "-": currentValue=parseInt(firstValue)-parseInt(secondValue);  break;
-    case "x": currentValue=parseInt(firstValue)*parseInt(secondValue); break;
-    case "/": currentValue=parseInt(firstValue)/parseInt(secondValue); break;
-    case "^": currentValue=parseInt(firstValue)**parseInt(secondValue);break;
+    case "+": currentValue=parseFloat(firstValue)+parseFloat(secondValue); break;
+    case "-": currentValue=parseFloat(firstValue)-parseFloat(secondValue);  break;
+    case "x": currentValue=parseFloat(firstValue)*parseFloat(secondValue); break;
+    case "/": currentValue=parseFloat(firstValue)/parseFloat(secondValue); break;
+    case "^": currentValue=parseFloat(firstValue)**parseFloat(secondValue);break;
   }
   currentValue=currentValue.toLocaleString('fullwide', {useGrouping:false});
 }
@@ -158,27 +158,63 @@ function displayLimiter() {
   }
 }
 
-/*document.querySelectorAll(".action").forEach(actionButton => {
+document.querySelectorAll(".action").forEach(actionButton => {
   actionButton.addEventListener('click', event => {
-    if (currentValue !="") {
     switch(event.target.id) {
-      case "fraction": secondValue=`1/${currentValue}`;
-       currentValue = 1 / parseInt(currentValue);
-       currentValue=currentValue.toString(); 
+      case "fraction": 
+        if (calculatorState=="calculated") {
+          secondValue="";
+          savedOperator="";
+          calculatorState="firstvalue";
+        }
+        if (calculatorState=="firstvalue") {
+          firstValue=`1/${currentValue}`;
+          currentValue = 1 / parseFloat(currentValue); 
+        } 
+        if (calculatorState=="secondvalue") {
+          secondValue=`1/${currentValue}`;
+          currentValue = 1 / parseFloat(currentValue); 
+        }
+       break;
+      case "square": 
+        if (calculatorState=="calculated") {
+          secondValue="";
+          savedOperator="";
+          calculatorState="firstvalue";
+        }
+        if (calculatorState=="firstvalue") {
+          firstValue="sqr("+currentValue+")";
+          currentValue = parseFloat(currentValue)**2; 
+        } 
+        if (calculatorState=="secondvalue") {
+          secondValue="sqr("+currentValue+")";
+          currentValue = parseFloat(currentValue)**2; 
+        }
         break;
-      case "square": secondValue="sqr("+currentValue+")";
-      currentValue = parseInt(currentValue)**2; 
-      currentValue=currentValue.toString();
+      case "square-root": 
+        if (calculatorState=="calculated") {
+          secondValue="";
+          savedOperator="";
+          calculatorState="firstvalue";
+        }
+        if (calculatorState=="firstvalue") {
+          firstValue=`sqrt(${currentValue})`;
+          currentValue = Math.sqrt(parseFloat(currentValue)); 
+        } 
+        if (calculatorState=="secondvalue") {
+          secondValue=`sqrt(${currentValue})`;
+          currentValue = Math.sqrt(parseFloat(currentValue)); 
+        }
+        if (currentValue=="NaN") {
+          calculatorState="error";
+          console.log("Cannot take square root of a negative number")};
         break;
-      case "square-root": secondValue=`sqrt(${currentValue})`;
-      currentValue = Math.sqrt(parseInt(currentValue)); 
-      currentValue=currentValue.toString();
-      if (currentValue=="NaN") {console.log("Cannot take square root of a negative number")}
-        break;
-      case "positive-negative": currentValue.search("-")!=-1 ?  currentValue=currentValue.substring(1) : currentValue=`-${currentValue}`;
+      case "positive-negative": 
+        currentValue.search("-")!=-1 ?  currentValue=currentValue.substring(1) : 
+        currentValue=`-${currentValue}`;
         break;
     }
+    currentValue=currentValue.toLocaleString('fullwide', {useGrouping:false});
     renderDisplay();
-  }
  });
-});*/
+});
