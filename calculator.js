@@ -1,3 +1,4 @@
+//let calculatorArray = JSON.parse(localstorage.getItem('calculatorArray')) || []
 let savedOperator = ""
 let currentValue = ""
 let firstValue = ""
@@ -105,12 +106,11 @@ document.getElementById("backspace").addEventListener('click', () => {
 });
 
 document.getElementById("clear-entry").addEventListener('click', () => {
-  resetValues();
+  currentValue=""
   renderDisplay();
 });
 
 document.getElementById("clear-content").addEventListener('click', () => {
-  memoryValue = "";
   resetValues();
   renderDisplay();
 });
@@ -134,7 +134,13 @@ function renderDisplay () {
   console.log(`State: ${calculatorState}`);
   document.getElementById('new-input').value=currentValue;
   document.getElementById('output').value=`${firstValue} ${savedOperator} ${secondValue}`;
+  //saveCurrentState();
 }
+
+/*function saveCurrentState () {
+  currentStateArray=[savedOperator, currentValue, firstValue, secondValue, memoryValue, calculatorState]
+  localStorage.setItem('calculatorArray', JSON.stringify(currentStateArray));
+}*/
 
 function displayLimiter() {
   const numberArray=currentValue.split("");
@@ -218,3 +224,21 @@ document.querySelectorAll(".action").forEach(actionButton => {
     renderDisplay();
  });
 });
+
+document.querySelectorAll(".memory").forEach(memoryButton => {
+  memoryButton.addEventListener('click', event => {
+    const memoryID=event.target.id;
+    pressmemoryButton(memoryID);
+    renderDisplay();
+  });
+});
+
+function pressmemoryButton(memoryID) {
+  switch(memoryID) {
+    case "memoryClear": memoryValue = ""; break;
+    case "memoryRecall": currentValue = memoryValue; break;
+    case "memoryAdd": memoryValue += currentValue; break;
+    case "memorySubtract": memoryValue -= currentValue; break;
+    case "memorySave": memoryValue = currentValue; break;
+  }
+}
