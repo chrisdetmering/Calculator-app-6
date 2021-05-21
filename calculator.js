@@ -237,8 +237,9 @@ function pressmemoryButton(memoryID) {
   switch(memoryID) {
     case "memoryClear": memoryValue = ""; break;
     case "memoryRecall": currentValue = memoryValue; break;
-    case "memoryAdd": memoryValue += currentValue; break;
-    case "memorySubtract": memoryValue -= currentValue; break;
-    case "memorySave": memoryValue = currentValue; break;
+    case "memoryAdd": memoryValue=parseFloat(memoryValue)+parseFloat(currentValue); calculatorState = "calculated"; break;
+    case "memorySubtract": memoryValue=parseFloat(memoryValue)-parseFloat(currentValue); calculatorState = "calculated"; break;
+    case "memorySave": memoryValue = currentValue; calculatorState = "calculated";break;
   }
+  memoryValue=memoryValue.toLocaleString('fullwide', {useGrouping:false});
 }
