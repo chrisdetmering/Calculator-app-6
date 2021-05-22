@@ -1,4 +1,16 @@
-//let calculatorArray = JSON.parse(localstorage.getItem('calculatorArray')) || []
+window.onload = () => {
+  let savedArray=JSON.parse(localStorage.getItem('calculatorArray'))  || [];
+  console.log(savedArray);
+  console.log(savedArray[1])
+  if (savedArray[0]!="") {savedOperator = savedArray[0]};
+  if (savedArray[1]!="") {currentValue = savedArray[1]};
+  if (savedArray[2]!="") {firstValue = savedArray[2]};
+  if (savedArray[3]!="") {secondValue = savedArray[3]};
+  if (savedArray[4]!="") {memoryValue = savedArray[4]};
+  if (savedArray[5]!="") {calculatorState = savedArray[5]};
+  renderDisplay();
+};
+
 let savedOperator = ""
 let currentValue = ""
 let firstValue = ""
@@ -134,13 +146,14 @@ function renderDisplay () {
   console.log(`State: ${calculatorState}`);
   document.getElementById('new-input').value=currentValue;
   document.getElementById('output').value=`${firstValue} ${savedOperator} ${secondValue}`;
-  //saveCurrentState();
+  saveCurrentState();
+  console.log(localStorage.getItem('calculatorArray'));
 }
 
-/*function saveCurrentState () {
-  currentStateArray=[savedOperator, currentValue, firstValue, secondValue, memoryValue, calculatorState]
+function saveCurrentState () {
+  currentStateArray=[savedOperator, currentValue,firstValue, secondValue, memoryValue, calculatorState]
   localStorage.setItem('calculatorArray', JSON.stringify(currentStateArray));
-}*/
+}
 
 function displayLimiter() {
   const numberArray=currentValue.split("");
