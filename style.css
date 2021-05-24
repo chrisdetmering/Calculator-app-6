@@ -4,22 +4,29 @@ body {
   text-align: center;
 }
 fieldset {
+  background-color: #202020;
   width: 300px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-
+  margin: auto
 }
 #display {
-  width: 300px;
+  width: 310px;
   min-height: 50px;
 }
 
 input[type="text"] {
+  background-color: #404040;
+  color: #f8f8ff;
   width: 280px;
   height: 50px;
   text-align: right;
   border: none;
+}
+
+input::placeholder{
+  color: #f8f8ff;
 }
 
 #output {
@@ -32,11 +39,31 @@ input[type="text"] {
 }
 
 input[type="button"] {
+  border: none;
+  margin: 1px;
   width: 75px;
   height: 50px;
+  border-radius: 3px;
+  color: #f8f8ff;
 }
 input[class="memory"] {
+  background-color: #203a69;
+  margin-top: 10px;
   width: 60px;
   height: 30px;
 }
-
+input[class="numeric"] {
+  background-color:	#000000;
+}
+input[class="operator"], input[class="action"] {
+  background-color: #101010;
+}
+input[class="calculate"] {
+  background-color: #203a69;
+}
+#positive-negative {
+  background-color:	#000000;
+}
+#clear-entry, #clear-content {
+  background-color: #f77f00;
+}

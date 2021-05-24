@@ -49,11 +49,9 @@ function pressNumberButton(numberID) {
     case "8": currentValue += "8"; break;
     case "9": currentValue += "9"; break;
     case "0":
-      currentValue == "" ? console.log("Error: No leading zero") : currentValue += "0";
-      break;
+      currentValue == "" ? console.log("Error: No leading zero") : currentValue += "0"; break;
     case ".":
-      currentValue.indexOf('.') >= 0 ? console.log("Error: Already contains decimal") : currentValue += ".";
-      break;
+      currentValue.indexOf('.') >= 0 ? console.log("Error: Already contains decimal") : currentValue += "."; break;
   }
 }
 
@@ -103,12 +101,12 @@ function calculate() {
   };
   switch(savedOperator) {
     case "+": currentValue=parseFloat(firstValue)+parseFloat(secondValue); break;
-    case "-": currentValue=parseFloat(firstValue)-parseFloat(secondValue);  break;
+    case "-": currentValue=parseFloat(firstValue)-parseFloat(secondValue); break;
     case "x": currentValue=parseFloat(firstValue)*parseFloat(secondValue); break;
     case "/": currentValue=parseFloat(firstValue)/parseFloat(secondValue); break;
     case "^": currentValue=parseFloat(firstValue)**parseFloat(secondValue);break;
   }
-  currentValue=currentValue.toLocaleString('en-US', {minimumFractionDigits:16, useGrouping:false});
+  currentValue=currentValue.toLocaleString('en-US', {maximumFractionDigits:16, useGrouping:false});
 }
 
 document.getElementById("backspace").addEventListener('click', () => {
@@ -127,6 +125,7 @@ document.getElementById("clear-content").addEventListener('click', () => {
 });
 
 document.getElementById("equals").addEventListener('click', () => {
+  if (currentValue=="NaN" || currentValue=="∞") {calculatorState="error"};
   calculatorState=="error" ? resetValues() : calculate();
   renderDisplay();
 });
@@ -142,11 +141,9 @@ function resetValues() {
 
 function renderDisplay () {
   displayLimiter();
-  console.log(`State: ${calculatorState}`);
   document.getElementById('new-input').value=currentValue;
   document.getElementById('output').value=`${firstValue} ${savedOperator} ${secondValue}`;
   saveCurrentState();
-  console.log(localStorage.getItem('calculatorArray'));
 }
 
 function saveCurrentState () {
@@ -187,11 +184,12 @@ document.querySelectorAll(".action").forEach(actionButton => {
         }
         if (calculatorState=="firstvalue") {
           firstValue=`1/${currentValue}`;
-          currentValue = 1 / parseFloat(currentValue); 
+          currentValue = 1 / parseFloat(currentValue);
+          calculatorState="calculated" 
         } 
         if (calculatorState=="secondvalue") {
           secondValue=`1/${currentValue}`;
-          currentValue = 1 / parseFloat(currentValue); 
+          currentValue = 1 / parseFloat(currentValue);
         }
        break;
       case "square": 
@@ -203,6 +201,7 @@ document.querySelectorAll(".action").forEach(actionButton => {
         if (calculatorState=="firstvalue") {
           firstValue="sqr("+currentValue+")";
           currentValue = parseFloat(currentValue)**2; 
+          calculatorState="calculated" 
         } 
         if (calculatorState=="secondvalue") {
           secondValue="sqr("+currentValue+")";
@@ -218,6 +217,7 @@ document.querySelectorAll(".action").forEach(actionButton => {
         if (calculatorState=="firstvalue") {
           firstValue=`sqrt(${currentValue})`;
           currentValue = Math.sqrt(parseFloat(currentValue)); 
+          calculatorState="calculated" 
         } 
         if (calculatorState=="secondvalue") {
           secondValue=`sqrt(${currentValue})`;
@@ -229,11 +229,8 @@ document.querySelectorAll(".action").forEach(actionButton => {
         currentValue=`-${currentValue}`;
         break;
     }
-    console.log(currentValue);
-    currentValue=currentValue.toLocaleString('en-US', {minimumFractionDigits:16, useGrouping:false});
-    if (currentValue=="NaN" || currentValue=="∞") {calculatorState="error"}
-    else {calculatorState="calculated"};
-    console.log(currentValue);
+    currentValue=currentValue.toLocaleString('en-US', {maximumFractionDigits:16, useGrouping:false});
+    if (currentValue=="NaN" || currentValue=="∞") {calculatorState="error"};
     renderDisplay();
  });
 });
