@@ -96,16 +96,11 @@ function pressOperatorButton(operatorID) {
 }
 
 function calculate() {
-  if (calculatorState == "calculated") {
-    firstValue=currentValue;
-  }
-  if (calculatorState == "secondvalue") {
-    calculatorState = "calculated"; secondValue=currentValue;
-  }
-  if (calculatorState == "operator") {
-    calculatorState = "calculated";
-    secondValue=firstValue;
-  }
+  switch (calculatorState) {
+    case "calculated": firstValue=currentValue; break;
+    case "secondvalue": calculatorState = "calculated"; secondValue=currentValue; break;
+    case "operator": calculatorState = "calculated"; secondValue=firstValue; break;
+  };
   switch(savedOperator) {
     case "+": currentValue=parseFloat(firstValue)+parseFloat(secondValue); break;
     case "-": currentValue=parseFloat(firstValue)-parseFloat(secondValue);  break;
@@ -113,7 +108,7 @@ function calculate() {
     case "/": currentValue=parseFloat(firstValue)/parseFloat(secondValue); break;
     case "^": currentValue=parseFloat(firstValue)**parseFloat(secondValue);break;
   }
-  currentValue=currentValue.toLocaleString('fullwide', {useGrouping:false});
+  currentValue=currentValue.toLocaleString('en-US', {minimumFractionDigits:16, useGrouping:false});
 }
 
 document.getElementById("backspace").addEventListener('click', () => {
@@ -132,7 +127,7 @@ document.getElementById("clear-content").addEventListener('click', () => {
 });
 
 document.getElementById("equals").addEventListener('click', () => {
-  calculate();
+  calculatorState=="error" ? resetValues() : calculate();
   renderDisplay();
 });
 
@@ -228,16 +223,17 @@ document.querySelectorAll(".action").forEach(actionButton => {
           secondValue=`sqrt(${currentValue})`;
           currentValue = Math.sqrt(parseFloat(currentValue)); 
         }
-        if (currentValue=="NaN") {
-          calculatorState="error";
-          console.log("Cannot take square root of a negative number")};
         break;
       case "positive-negative": 
         currentValue.search("-")!=-1 ?  currentValue=currentValue.substring(1) : 
         currentValue=`-${currentValue}`;
         break;
     }
-    currentValue=currentValue.toLocaleString('fullwide', {useGrouping:false});
+    console.log(currentValue);
+    currentValue=currentValue.toLocaleString('en-US', {minimumFractionDigits:16, useGrouping:false});
+    if (currentValue=="NaN" || currentValue=="∞") {calculatorState="error"}
+    else {calculatorState="calculated"};
+    console.log(currentValue);
     renderDisplay();
  });
 });
@@ -259,4 +255,4 @@ function pressmemoryButton(memoryID) {
     case "memorySave": memoryValue = currentValue; calculatorState = "calculated";break;
   }
   memoryValue=memoryValue.toLocaleString('fullwide', {useGrouping:false});
-}
+};
