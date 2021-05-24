@@ -1,13 +1,17 @@
 window.onload = () => {
-  let savedArray=JSON.parse(localStorage.getItem('calculatorArray'))  || [];
-  console.log(savedArray);
-  console.log(savedArray[1])
-  if (savedArray[0]!="") {savedOperator = savedArray[0]};
-  if (savedArray[1]!="") {currentValue = savedArray[1]};
-  if (savedArray[2]!="") {firstValue = savedArray[2]};
-  if (savedArray[3]!="") {secondValue = savedArray[3]};
-  if (savedArray[4]!="") {memoryValue = savedArray[4]};
-  if (savedArray[5]!="") {calculatorState = savedArray[5]};
+  let localStorageArray=JSON.parse(localStorage.getItem('calculatorArray'))  || [];
+  if (typeof localStorageArray[0] !== "undefined") 
+    {savedOperator = localStorageArray[0]};
+  if (typeof localStorageArray[1] !== "undefined") 
+    {currentValue = localStorageArray[1]};
+  if (typeof localStorageArray[2] !== "undefined") 
+    {firstValue = localStorageArray[2]};
+  if (typeof localStorageArray[3] !== "undefined") 
+    {secondValue = localStorageArray[3]};
+  if (typeof localStorageArray[4] !== "undefined") 
+    {memoryValue = localStorageArray[4]};
+  if (typeof localStorageArray[5] !== "undefined") 
+    {calculatorState = localStorageArray[5]};
   renderDisplay();
 };
 
